@@ -1,66 +1,57 @@
 @extends('layouts.app')
+
 @section('content')
-<div class="row justify-content-center mt-3">
- <div class="col-md-12">
- @session('success')
- <div class="alert alert-success" role="alert">
- {{ $value }}
- </div>
- @endsession
- <div class="card">
- <div class="card-header">Product List</div>
- <div class="card-body">
- <a href="{{ route('products.create') }}" class="btn 
-btn-success btn-sm my-2"><i class="bi bi-plus-circle"></i> Add New 
-Product</a>
- <table class="table table-striped table-bordered">
- <thead>
- <tr>
- <th scope="col">S#</th>
- <th scope="col">Code</th>
- <th scope="col">Name</th>
- <th scope="col">Quantity</th>
- <th scope="col">Price</th>
- <th scope="col">Action</th>
- </tr>
- </thead>
-<tbody>
- @forelse ($products as $product)
-<tr>
- <th scope="row">{{ $loop->iteration 
-}}</th>
- <td>{{ $product->code }}</td>
- <td>{{ $product->name }}</td>
- <td>{{ $product->quantity }}</td>
- <td>{{ $product->price }}</td>
- <td>
- <form action="{{ 
-route('products.destroy', $product->id) }}" method="post">
- @csrf
-@method('DELETE')
- <a href="{{ route('products.show', 
-$product->id) }}" class="btn btn-warning btn-sm"><i class="bi bieye"></i> Show</a>
- <a href="{{ route('products.edit', 
-$product->id) }}" class="btn btn-primary btn-sm"><i class="bi bipencil-square"></i> Edit</a> 
- <button type="submit" class="btn 
-btn-danger btn-sm" onclick="return confirm('Do you want to delete this 
-product?');"><i class="bi bi-trash"></i> Delete</button>
- </form>
- </td>
- </tr>
-@empty
- <td colspan="6">
- <span class="text-danger">
- <strong>No Product Found!</strong>
- </span>
- </td>
- @endforelse
- </tbody>
- </table>
- {{ $products->links() }}
- </div>
- </div>
- </div> 
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span>Product List</span>
+                    <a href="{{ route('products.create') }}" class="btn btn-success btn-sm">+ Add New Product</a>
+                </div>
+                <div class="card-body">
+                    @if(session('success'))
+                        <div class="alert alert-success mb-3">{{ session('success') }}</div>
+                    @endif
+                    <table class="table table-bordered table-striped mb-0">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Quantity</th>
+                                <th>Price</th>
+                                <th style="width: 180px;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($products as $i => $product)
+                                <tr>
+                                    <td>{{ $i + 1 }}</td>
+                                    <td>{{ $product->code }}</td>
+                                    <td>{{ $product->name }}</td>
+                                    <td>{{ $product->quantity }}</td>
+                                    <td>{{ number_format($product->price, 2) }}</td>
+                                    <td>
+                                        <a href="{{ route('products.show', $product) }}" class="btn btn-warning btn-sm">Show</a>
+                                        <a href="{{ route('products.edit', $product) }}" class="btn btn-primary btn-sm">Edit</a>
+                                        <form action="{{ route('products.destroy', $product) }}" method="POST" class="d-inline">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button class="btn btn-danger btn-sm" onclick="return confirm('Delete this product?')">Delete</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center">No products found.</td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
- 
 @endsection
