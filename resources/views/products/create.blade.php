@@ -7,7 +7,7 @@
             <a href="{{ route('products.index') }}" class="btn btn-primary btn-sm">&larr; Back</a>
         </div>
         <div class="card-body">
-            <form action="{{ route('products.store') }}" method="post">
+            <form action="{{ route('products.store') }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="mb-3">
                     <label for="code" class="form-label">Code</label>
@@ -41,6 +41,13 @@
                     <label for="description" class="form-label">Description</label>
                     <textarea class="form-control @error('description') is-invalid @enderror" id="description" name="description">{{ old('description') }}</textarea>
                     @error('description')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label for="file" class="form-label">Product File</label>
+                    <input type="file" class="form-control @error('file') is-invalid @enderror" id="file" name="file">
+                    @error('file')
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
