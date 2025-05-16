@@ -70,5 +70,17 @@ class ProductController extends Controller
         return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
 
+    public function destroy(Product $product)
+    {
+        // Optionally, delete the file from storage if it exists
+        if ($product->file_path && \Storage::disk('public')->exists($product->file_path)) {
+            \Storage::disk('public')->delete($product->file_path);
+        }
+
+        $product->delete();
+
+        return redirect()->route('products.index')->with('success', 'Product deleted successfully.');
+    }
+
     // Add show, edit, update, destroy as needed
 }
