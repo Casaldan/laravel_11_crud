@@ -23,18 +23,14 @@
         <!-- Scripts -->
         @vite(['resources/js/app.js'])
     </head>
-    <body class="bg-dark text-light">
+    <body class="bg-light text-dark">
         <div class="min-vh-100 d-flex flex-column justify-content-center align-items-center py-4">
-            <div class="mb-4">
-                <a href="/">
-                    <x-application-logo class="d-inline-block" style="width: 5rem; height: 5rem; filter: brightness(0) invert(1);" />
-                </a>
-            </div>
+            <!-- Logo removed as requested -->
 
             <div class="w-100" style="max-width: 28rem;">
-                <div class="card shadow">
+                <div class="card shadow bg-white">
                     <div class="card-body p-4">
-                        {{ $slot }}
+                        @yield('content')
                     </div>
                 </div>
             </div>
