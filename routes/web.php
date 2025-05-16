@@ -6,14 +6,13 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\ProductController;
 
+// Redirect root to login page
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('login');
 });
 
-// Dashboard route (optional)
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Products page as the main landing page after login
+Route::get('/products', [ProductController::class, 'index'])->middleware(['auth', 'verified'])->name('products.index');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -27,7 +26,7 @@ Route::post('/login', [LoginController::class, 'login']);
 
 // Products RESTful routes (all protected)
 Route::middleware('auth')->group(function () {
-    Route::resource('products', ProductController::class);
+    Route::resource('products', ProductController::class)->except(['index']);
 });
 
 Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
